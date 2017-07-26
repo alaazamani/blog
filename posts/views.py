@@ -2,15 +2,36 @@ from django.shortcuts import render
 from .models import Post
 from .forms import PostForm
 from django.shortcuts import get_object_or_404, redirect
-
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 def post_list(request):
-	obj_list = Post.objects.all()#.order_by("-timestamp", "title")
-	context = {
-		"post_list" : obj_list,
-	}
-	return render(request, 'post_list.html', context)
+    obj_list = Post.objects.all()
+    paginator = Paginator(obj_list, 4) 
+    page = request.GET.get('page')
+    try:
+        objs = paginator.page(page)
+    except PageNotAnInteger:
+       
+        objs = paginator.page(1)
+    except EmptyPage:
+       
+        objs = paginator.page(paginator.num_pages)
+
+    context = {
+    	"post_list": objs,
+    }
+
+    return render(request, 'post_list.html', context)
+
+
+# def post_list(request):
+# 	obj_list = Post.objects.all()#.order_by("-timestamp", "title")
+# 	context = {
+# 		"post_list" : obj_list,
+# 	}
+# 	return render(request, 'post_list.html', context)
 
 
 def post_detail(request, post_id):
@@ -21,7 +42,7 @@ def post_detail(request, post_id):
 	return render(request, 'post_detail.html', context)
 
 def post_create(request):
-	form = PostForm(request.POST or None)
+	form = PostForm(request.POST or None, request.FILES or None, instance=post_object)
 	if form.is_valid():
 		form.save()
 		messages.success(request, "OMG! So cool! You created an object.")
@@ -33,7 +54,7 @@ def post_create(request):
 
 def post_update(request, post_id):
 	post_object = get_object_or_404(Post, id=post_id)
-	form = PostForm(request.POST or None, instance =post_object)
+	form = PostForm(request.POST or None, request.FILES or None,instance =post_object)
 	if form.is_valid():
 		form.save()
 		messages.success(request, "Giving it a second thought?")

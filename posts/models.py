@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 
 class Post(models.Model):
 	title = models.CharField(max_length=100)
+	image = models.ImageField(upload_to="blog_images", null=True, blank=True)
 	content = models.TextField()
 	updated = models.DateTimeField(auto_now=True)
 	timestamp = models.DateTimeField(auto_now_add=True)
@@ -14,16 +15,5 @@ class Post(models.Model):
 		return reverse("posts:detail", kwargs={"post_id": self.id})
 
 
-class Recipe(models.Model):
-	length = models.DurationField()
-	content = models.TextField()
-	picture = models.ImageField()
-	updated = models.DateTimeField(auto_now=True)
-	timestamp = models.DateTimeField(auto_now_add=True)
-	title = models.CharField(max_length=50)
-
-	def __str__(self):
-		return self.title
-
 	class Meta: 
-		ordering = ['-timestamp', '-updateed']
+		ordering = ['-timestamp', '-updated']

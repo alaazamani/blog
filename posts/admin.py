@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Post, Recipe
+from .models import Post
 
 class PostModelAdmin(admin.ModelAdmin):
 	list_display = ['title', 'timestamp', 'updated']
@@ -14,4 +14,3 @@ class PostModelAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Post, PostModelAdmin)
-admin.site.register(Recipe)
