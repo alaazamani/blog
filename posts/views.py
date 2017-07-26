@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 
 def post_list(request):
-	obj_list = Post.objects.all()
+	obj_list = Post.objects.all()#.order_by("-timestamp", "title")
 	context = {
 		"post_list" : obj_list,
 	}
