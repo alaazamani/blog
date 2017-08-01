@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% load urlify %}
+{% load comments %}
+{% load crispy_forms_tags %}
 {% block head_title %}Detail{% endblock head_title %}
 {% block content %}
+
     <div class="row">
         <div class="col-sm-6">
             <div class="thumbnail">
@@ -28,9 +31,12 @@
                     <a href="https://www.linkedin.com/shareArticle?mini=true&url={{request.build_absolute_uri}}&title={{instance.title|urlify}}&summary={{instance.content|urlify}}&source={{request.build_absolute_uri}}">
                         Share on Linkedin
                     </a>
-                </div>
+                </div> 
             </div>
+            {% include "django_comments.html" %}
+                <br>
+    <br>
+    <a href="{% url 'posts:list' %}" class="btn btn-primary">Go back to list</a>
         </div>
     </div>
-    <a href="{% url 'posts:list' %}" class="btn btn-primary">Go back to list</a>
 {% endblock content %}
